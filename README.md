@@ -21,7 +21,7 @@ This Repository is Going to be Spotify Backend Clone
 # Tasks
 - [x] Basic Files and Structure
 - [ ] Models
-    - [ ] Users
+    - [x] Users
     - [ ] Artists
     - [ ] Musics
     - [ ] Albums
