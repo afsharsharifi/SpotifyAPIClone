@@ -25,7 +25,9 @@ INSTALLED_APPS = [
     # Third-Party Packages
     "django_cleanup.apps.CleanupConfig",
     "rest_framework",
+    "drf_spectacular",
     # Local Apps
+    "home.apps.HomeConfig",
     "users.apps.UsersConfig",
 ]
 
@@ -59,11 +61,21 @@ TEMPLATES = [
 
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": ("rest_framework_simplejwt.authentication.JWTAuthentication",),
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
 }
 
 SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(minutes=10),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=120),
+}
+
+SPECTACULAR_SETTINGS = {
+    "TITLE": "Spotify API Clone",
+    "DESCRIPTION": "This is going to be like Spotify Api",
+    "VERSION": "1.0.0",
+    "SERVE_INCLUDE_SCHEMA": False,
+    "SCHEMA_PATH_PREFIX": r"/api/",
+    # OTHER SETTINGS
 }
 
 AUTH_USER_MODEL = "users.User"
