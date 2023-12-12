@@ -5,23 +5,17 @@ from users.managers import UserManager
 
 
 class User(AbstractBaseUser, PermissionsMixin):
-    ROLE_CHOISES = [
-        ("admin", "مدیر"),
-        ("artist", "هنرمند"),
-        ("user", "کاربر"),
-    ]
     first_name = models.CharField(max_length=150, verbose_name="نام")
     last_name = models.CharField(max_length=150, verbose_name="نام خانوادگی")
-    email = models.EmailField(unique=True, verbose_name="ایمیل")
-    is_email_verified = models.BooleanField(default=False, verbose_name="تایید ایمیل")
-    image = models.ImageField(upload_to=path_manager.create_profile_image_path, null=True, blank=True, verbose_name="تصویر")
-    role = models.CharField(max_length=6, choices=ROLE_CHOISES, verbose_name="نوع کاربر")
+    phone = models.CharField(max_length=11, unique=True, verbose_name="شماره تلفن")
+    is_phone_verified = models.BooleanField(default=False, verbose_name="تایید شماره تلفن")
+    is_admin = models.BooleanField(default=False, verbose_name="مدیریت")
     is_active = models.BooleanField(default=False, verbose_name="فعال")
-    last_seen = models.DateTimeField(null=True, blank=True, editable=False)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+    last_seen = models.DateTimeField(null=True, blank=True, editable=False, verbose_name="آخرین بازدید")
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name="تاریخ ساخت")
+    updated_at = models.DateTimeField(auto_now=True, verbose_name="تاریخ ویرایش")
 
-    USERNAME_FIELD = "email"
+    USERNAME_FIELD = "phone"
     REQUIRED_FIELDS = ["first_name", "last_name"]
 
     objects = UserManager()
