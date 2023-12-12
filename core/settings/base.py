@@ -29,6 +29,7 @@ INSTALLED_APPS = [
     # Local Apps
     "home.apps.HomeConfig",
     "users.apps.UsersConfig",
+    "authentication.apps.AuthenticationConfig",
 ]
 
 MIDDLEWARE = [
