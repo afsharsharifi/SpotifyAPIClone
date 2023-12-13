@@ -38,37 +38,39 @@ class SendOTPToPhoneAPIView(APIView):
 
 
 class VerifyOTPFromPhoneAPIView(APIView):
+    @extend_schema(request=serializers.OTPPhoneNumberSerializer)
     def post(self, request, format=None):
         serializer = serializers.OTPPhoneNumberSerializer(data=request.data)
         if serializer.is_valid():
             phone = serializer.data["phone"]
             otp_code = serializer.data["otp_code"]
             if not OTP.objects.filter(phone=phone):
-                return Response({"message": "برای این شماره تلفن کدی وجود ندارد"}, status=status.HTTP_404_NOT_FOUND)
+                return Response({"detail": "برای این شماره تلفن کدی وجود ندارد"}, status=status.HTTP_404_NOT_FOUND)
             otp_obj = OTP.objects.get(phone=phone)
             if otp_obj.otp_code == otp_code:
                 if otp_obj.expire_at < timezone.now():
-                    return Response({"message": "کد یکبار مصرف منقضی شده است"}, status=status.HTTP_408_REQUEST_TIMEOUT)
-                return Response({"message": "کد یکبار مصرف صحیح است"}, status=status.HTTP_200_OK)
-            return Response({"message": "کد یکبار مصرف اشتباه است"}, status=status.HTTP_400_BAD_REQUEST)
+                    return Response({"detail": "کد یکبار مصرف منقضی شده است"}, status=status.HTTP_408_REQUEST_TIMEOUT)
+                return Response({"detail": "کد یکبار مصرف صحیح است"}, status=status.HTTP_200_OK)
+            return Response({"detail": "کد یکبار مصرف اشتباه است"}, status=status.HTTP_400_BAD_REQUEST)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class VerifyPhoneUsingOTPAPIView(APIView):
+    @extend_schema(request=serializers.OTPPhoneNumberSerializer)
     def post(self, request, format=None):
         serializer = serializers.OTPPhoneNumberSerializer(data=request.data)
         if serializer.is_valid():
             phone = serializer.data["phone"]
             otp_code = serializer.data["otp_code"]
             if not OTP.objects.filter(phone=phone):
-                return Response({"message": "برای این شماره تلفن کدی وجود ندارد"}, status=status.HTTP_404_NOT_FOUND)
+                return Response({"detail": "برای این شماره تلفن کدی وجود ندارد"}, status=status.HTTP_404_NOT_FOUND)
             otp_obj = OTP.objects.get(phone=phone)
             if otp_obj.otp_code == otp_code:
                 if otp_obj.expire_at < timezone.now():
-                    return Response({"message": "کد یکبار مصرف منقضی شده است"}, status=status.HTTP_408_REQUEST_TIMEOUT)
-                user = get_object_or_404(User, pk=request.user.id)
-                user.is_active == True
+                    return Response({"detail": "کد یکبار مصرف منقضی شده است"}, status=status.HTTP_408_REQUEST_TIMEOUT)
+                user = get_object_or_404(User, phone=phone)
+                user.is_active = True
                 user.save()
-                return Response({"message": "کد یکبار مصرف صحیح است"}, status=status.HTTP_200_OK)
-            return Response({"message": "کد یکبار مصرف اشتباه است"}, status=status.HTTP_400_BAD_REQUEST)
+                return Response({"detail": "شماره تلفن با موفقیت تایید شد"}, status=status.HTTP_200_OK)
+            return Response({"detail": "کد یکبار مصرف اشتباه است"}, status=status.HTTP_400_BAD_REQUEST)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
