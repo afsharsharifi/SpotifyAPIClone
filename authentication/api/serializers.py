@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from users.models import User
 
 
 class PhoneNumberSerializer(serializers.Serializer):
@@ -8,3 +9,21 @@ class PhoneNumberSerializer(serializers.Serializer):
 class OTPPhoneNumberSerializer(serializers.Serializer):
     phone = serializers.CharField(max_length=11, required=True)
     otp_code = serializers.CharField(max_length=6, required=True)
+
+
+class UserRegisterSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ("id", "first_name", "last_name", "phone", "password")
+        # write_only_fields = ("password",)
+        read_only_fields = ("id",)
+        extra_kwargs = {"password": {"write_only": True, "min_length": 8}}
+
+    def create(self, validated_data):
+        user = User.objects.create_user(
+            first_name=validated_data["first_name"],
+            last_name=validated_data["last_name"],
+            password=validated_data["password"],
+            phone=validated_data["phone"],
+        )
+        return user

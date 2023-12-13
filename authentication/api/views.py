@@ -6,6 +6,7 @@ from extensions.utils import generate_otp
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from rest_framework.generics import CreateAPIView
 from users.models import User
 from drf_spectacular.utils import extend_schema
 
@@ -74,3 +75,8 @@ class VerifyPhoneUsingOTPAPIView(APIView):
                 return Response({"detail": "شماره تلفن با موفقیت تایید شد"}, status=status.HTTP_200_OK)
             return Response({"detail": "کد یکبار مصرف اشتباه است"}, status=status.HTTP_400_BAD_REQUEST)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class UserCreateAPIView(CreateAPIView):
+    model = User
+    serializer_class = serializers.UserRegisterSerializer

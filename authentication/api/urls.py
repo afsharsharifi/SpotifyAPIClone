@@ -4,6 +4,7 @@ from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from . import views
 
 urlpatterns = [
+    path("register/", views.UserCreateAPIView.as_view()),
     path("otp/send/", views.SendOTPToPhoneAPIView.as_view()),
     path("otp/verify/", views.VerifyOTPFromPhoneAPIView.as_view()),
     path("otp/phone/", views.VerifyPhoneUsingOTPAPIView.as_view()),
