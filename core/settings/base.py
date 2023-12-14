@@ -26,6 +26,7 @@ INSTALLED_APPS = [
     "django_cleanup.apps.CleanupConfig",
     "rest_framework",
     "drf_spectacular",
+    "corsheaders",
     # Local Apps
     "home.apps.HomeConfig",
     "users.apps.UsersConfig",
