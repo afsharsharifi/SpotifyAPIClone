@@ -8,6 +8,7 @@ ALLOWED_HOSTS = ["*"]
 
 CORS_ORIGIN_WHITELIST = [
     "http://127.0.0.1",
+    "http://192.168.1.104",
     "http://spotify.apnel.top",
     "https://spotify.apnel.top",
 ]
