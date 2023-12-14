@@ -3,21 +3,23 @@ from users.models import User
 
 
 class PhoneNumberSerializer(serializers.Serializer):
-    phone = serializers.CharField(max_length=11, required=True)
+    phone = serializers.CharField(max_length=11, min_length=11, required=True)
 
 
 class OTPPhoneNumberSerializer(serializers.Serializer):
-    phone = serializers.CharField(max_length=11, required=True)
-    otp_code = serializers.CharField(max_length=6, required=True)
+    phone = serializers.CharField(max_length=11, min_length=11, required=True)
+    otp_code = serializers.CharField(max_length=6, min_length=6, required=True)
 
 
 class UserRegisterSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ("id", "first_name", "last_name", "phone", "password")
-        # write_only_fields = ("password",)
         read_only_fields = ("id",)
-        extra_kwargs = {"password": {"write_only": True, "min_length": 8}}
+        extra_kwargs = {
+            "phone": {"max_length": 11, "min_length": 11},
+            "password": {"write_only": True, "min_length": 8},
+        }
 
     def create(self, validated_data):
         user = User.objects.create_user(

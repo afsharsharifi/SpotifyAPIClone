@@ -8,14 +8,25 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.generics import CreateAPIView
 from users.models import User
-from drf_spectacular.utils import extend_schema
+from drf_spectacular.utils import extend_schema, OpenApiExample
 
 from ..models import OTP
 from . import serializers
 
 
 class SendOTPToPhoneAPIView(APIView):
-    @extend_schema(request=serializers.PhoneNumberSerializer)
+    @extend_schema(
+        request=serializers.PhoneNumberSerializer,
+        examples=[
+            OpenApiExample(
+                "Example Data",
+                summary="Example Data",
+                value={
+                    "phone": "09012095461",
+                },
+            ),
+        ],
+    )
     def post(self, request, format=None):
         serializer = serializers.PhoneNumberSerializer(data=request.data)
         if serializer.is_valid():
