@@ -2,13 +2,14 @@ from datetime import timedelta
 
 from django.shortcuts import get_object_or_404
 from django.utils import timezone
-from extensions.utils import generate_otp
+from drf_spectacular.utils import OpenApiExample, extend_schema
 from rest_framework import status
+from rest_framework.generics import CreateAPIView
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from rest_framework.generics import CreateAPIView
+
+from extensions.utils import generate_otp
 from users.models import User
-from drf_spectacular.utils import extend_schema, OpenApiExample
 
 from ..models import OTP
 from . import serializers
