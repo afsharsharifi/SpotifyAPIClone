@@ -23,7 +23,7 @@ class SendOTPToPhoneAPIView(APIView):
                 "Example Data",
                 summary="Example Data",
                 value={
-                    "phone": "09012095461",
+                    "phone": "09012345678",
                 },
             ),
         ],
@@ -51,26 +51,17 @@ class SendOTPToPhoneAPIView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-# class VerifyOTPFromPhoneAPIView(APIView):
-#     @extend_schema(request=serializers.OTPPhoneNumberSerializer)
-#     def post(self, request, format=None):
-#         serializer = serializers.OTPPhoneNumberSerializer(data=request.data)
-#         if serializer.is_valid():
-#             phone = serializer.data["phone"]
-#             otp_code = serializer.data["otp_code"]
-#             if not OTP.objects.filter(phone=phone):
-#                 return Response({"detail": "برای این شماره تلفن کدی وجود ندارد"}, status=status.HTTP_404_NOT_FOUND)
-#             otp_obj = OTP.objects.get(phone=phone)
-#             if otp_obj.otp_code == otp_code:
-#                 if otp_obj.expire_at < timezone.now():
-#                     return Response({"detail": "کد یکبار مصرف منقضی شده است"}, status=status.HTTP_408_REQUEST_TIMEOUT)
-#                 return Response({"detail": "کد یکبار مصرف صحیح است"}, status=status.HTTP_200_OK)
-#             return Response({"detail": "کد یکبار مصرف اشتباه است"}, status=status.HTTP_400_BAD_REQUEST)
-#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
 class VerifyPhoneUsingOTPAPIView(APIView):
-    @extend_schema(request=serializers.OTPPhoneNumberSerializer)
+    @extend_schema(
+        request=serializers.OTPPhoneNumberSerializer,
+        examples=[
+            OpenApiExample(
+                "Example Data",
+                summary="Example Data",
+                value={"phone": "09012345678", "otp_code": "123456"},
+            )
+        ],
+    )
     def post(self, request, format=None):
         serializer = serializers.OTPPhoneNumberSerializer(data=request.data)
         if serializer.is_valid():
