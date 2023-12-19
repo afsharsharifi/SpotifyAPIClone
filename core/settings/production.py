@@ -4,11 +4,16 @@ BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
 DEBUG = False
 
-ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = [
+    "127.0.0.1",
+    "localhost",
+    "spotify.apnel.top",
+    "http://spotify.apnel.top",
+    "https://spotify.apnel.top",
+]
 
 CORS_ORIGIN_WHITELIST = [
     "http://127.0.0.1",
-    "http://192.168.1.104",
     "http://spotify.apnel.top",
     "https://spotify.apnel.top",
 ]
