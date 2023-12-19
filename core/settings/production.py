@@ -7,15 +7,15 @@ DEBUG = False
 ALLOWED_HOSTS = [
     "127.0.0.1",
     "localhost",
-    "spotify.apnel.top",
-    "http://spotify.apnel.top",
-    "https://spotify.apnel.top",
+    "spotify.apanel.top",
+    "http://spotify.apanel.top",
+    "https://spotify.apanel.top",
 ]
 
 CORS_ORIGIN_WHITELIST = [
     "http://127.0.0.1",
-    "http://spotify.apnel.top",
-    "https://spotify.apnel.top",
+    "http://spotify.apanel.top",
+    "https://spotify.apanel.top",
 ]
 
 

@@ -12,6 +12,12 @@ if os.path.isfile(dotenv_file):
 
 SECRET_KEY = os.environ["SECRET_KEY"]
 
+CSRF_TRUSTED_ORIGINS = [
+    "https://127.0.0.1",
+    "http://spotify.apanel.top",
+    "https://spotify.apanel.top",
+]
+
 
 # Application definition
 
