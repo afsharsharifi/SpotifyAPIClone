@@ -33,6 +33,7 @@ class SendOTPToPhoneAPIView(APIView):
         serializer = serializers.PhoneNumberSerializer(data=request.data)
         if serializer.is_valid():
             phone = serializer.data["phone"]
+            user = get_object_or_404(User, phone=phone)
             otp_code = generate_otp()
             obj, created = OTP.objects.update_or_create(
                 phone=phone,
