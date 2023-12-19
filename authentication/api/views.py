@@ -18,6 +18,7 @@ from . import serializers
 class SendOTPToPhoneAPIView(APIView):
     @extend_schema(
         request=serializers.PhoneNumberSerializer,
+        responses=None,
         examples=[
             OpenApiExample(
                 "Example Data",
@@ -54,6 +55,7 @@ class SendOTPToPhoneAPIView(APIView):
 class VerifyPhoneUsingOTPAPIView(APIView):
     @extend_schema(
         request=serializers.OTPPhoneNumberSerializer,
+        responses=None,
         examples=[
             OpenApiExample(
                 "Example Data",
