@@ -36,3 +36,28 @@ class User(AbstractBaseUser, PermissionsMixin):
     @property
     def is_staff(self):
         return self.is_superuser
+
+
+class Artist(models.Model):
+    fullname = models.CharField(max_length=200, verbose_name="نام کامل")
+    bio = models.TextField(verbose_name="بیو")
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name="تاریخ ساخت")
+    updated_at = models.DateTimeField(auto_now=True, verbose_name="تاریخ ویرایش")
+
+    class Meta:
+        verbose_name = "خواننده"
+        verbose_name_plural = "خواننده ها"
+
+    def __str__(self):
+        return self.fullname
+
+
+class UserIP(models.Model):
+    user_ip = models.GenericIPAddressField(verbose_name="آیپی کاربر")
+
+    class Meta:
+        verbose_name = "آیپی کاربر"
+        verbose_name_plural = "آیپی های کاربران"
+
+    def __str__(self):
+        return self.user_ip

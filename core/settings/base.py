@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     "home.apps.HomeConfig",
     "users.apps.UsersConfig",
     "authentication.apps.AuthenticationConfig",
+    "songs.apps.SongsConfig",
 ]
 
 MIDDLEWARE = [
