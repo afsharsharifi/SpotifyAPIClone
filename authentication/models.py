@@ -16,5 +16,5 @@ class OTP(models.Model):
         return self.phone
 
     def save(self, *args, **kwargs):
-        self.expire_at = timezone.now() + timezone.timedelta(minutes=2)
+        self.expire_at = timezone.now() + timezone.timedelta(seconds=90)
         return super().save(*args, **kwargs)
