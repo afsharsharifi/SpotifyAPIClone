@@ -7,6 +7,7 @@ from rest_framework import status
 from rest_framework.generics import CreateAPIView
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from rest_framework.exceptions import APIException
 
 from extensions.utils import generate_otp
 from users.models import User
@@ -33,7 +34,7 @@ class SendOTPToPhoneAPIView(APIView):
         serializer = serializers.PhoneNumberSerializer(data=request.data)
         if serializer.is_valid():
             phone = serializer.data["phone"]
-            user = get_object_or_404(User, phone=phone)
+            user = User.objects.filter(requested_phone=phone).last()
             otp_code = generate_otp()
             obj, created = OTP.objects.update_or_create(
                 phone=phone,
@@ -76,9 +77,11 @@ class VerifyPhoneUsingOTPAPIView(APIView):
             if otp_obj.otp_code == otp_code:
                 if otp_obj.expire_at < timezone.now():
                     return Response({"detail": "کد یکبار مصرف منقضی شده است"}, status=status.HTTP_408_REQUEST_TIMEOUT)
-                user = get_object_or_404(User, phone=phone)
+                user = User.objects.filter(requested_phone=phone).last()
                 user.is_active = True
+                user.verified_phone = user.requested_phone
                 user.save()
+                User.objects.filter(requested_phone=phone, is_active=False).delete()
                 return Response({"detail": "شماره تلفن با موفقیت تایید شد"}, status=status.HTTP_200_OK)
             return Response({"detail": "کد یکبار مصرف اشتباه است"}, status=status.HTTP_400_BAD_REQUEST)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -87,3 +90,10 @@ class VerifyPhoneUsingOTPAPIView(APIView):
 class UserCreateAPIView(CreateAPIView):
     model = User
     serializer_class = serializers.UserRegisterSerializer
+
+    def post(self, request, *args, **kwargs):
+        requested_phone = request.data.get("requested_phone")
+        user = User.objects.filter(verified_phone=requested_phone).first()
+        if user:
+            return Response({"detail": "این شماره تلفن قبلا تایید شده است"}, status=status.HTTP_400_BAD_REQUEST)
+        return super().post(request, *args, **kwargs)
