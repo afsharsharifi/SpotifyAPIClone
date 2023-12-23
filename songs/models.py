@@ -22,6 +22,8 @@ class Song(models.Model):
     viewers_by_ip = models.ManyToManyField(UserIP, default="192.168.0.1", blank=True, related_name="videos", verbose_name="بازدیدکنندگان بر اساس IP")
     file_320 = models.FileField(verbose_name="کیفیت 320", upload_to=create_songs_file_path, null=True, blank=True)
     file_128 = models.FileField(verbose_name="کیفیت 128", upload_to=create_songs_file_path, null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name="تاریخ ساخت")
+    updated_at = models.DateTimeField(auto_now=True, verbose_name="تاریخ ویرایش")
 
     class Meta:
         verbose_name = "آهنگ"

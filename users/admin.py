@@ -26,3 +26,13 @@ class UserAdmin(BaseUserAdmin):
             },
         ),
     )
+
+
+@admin.register(models.Artist)
+class ArtistAdmin(admin.ModelAdmin):
+    list_display = ("__str__", "fullname")
+
+
+@admin.register(models.UserIP)
+class UserIPAdmin(admin.ModelAdmin):
+    list_display = ("__str__", "user_ip")
