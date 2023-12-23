@@ -23,6 +23,8 @@ urlpatterns = [
     path("api/", include("home.api.urls")),
     path("admin/", admin.site.urls),
     path("api/auth/", include("authentication.api.urls")),
+    path("api/users/", include("users.api.urls")),
+    path("api/artists/", include("users.api.urls_artists")),
     re_path(r"^media/(?P<path>.*)$", serve, {"document_root": settings.MEDIA_ROOT}),
     re_path(r"^static/(?P<path>.*)$", serve, {"document_root": settings.STATIC_ROOT}),
 ]
