@@ -75,7 +75,8 @@ REST_FRAMEWORK = {
 }
 
 SIMPLE_JWT = {
-    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=10),
+    # ! Change Later
+    "ACCESS_TOKEN_LIFETIME": timedelta(days=120),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=120),
 }
 
@@ -86,6 +87,7 @@ SPECTACULAR_SETTINGS = {
     "SERVE_INCLUDE_SCHEMA": False,
     "SCHEMA_PATH_PREFIX": r"/api/",
     # OTHER SETTINGS
+    "COMPONENT_SPLIT_REQUEST": True,
 }
 
 AUTH_USER_MODEL = "users.User"
