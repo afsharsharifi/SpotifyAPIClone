@@ -5,15 +5,10 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from extensions.permissions import IsAdminOnlyPermission
+from extensions.permissions import UserGetAdminPostPutDeletePermission
 
 from ..models import Genre, Like, Song
-from .serializers import (
-    GenreSerializer,
-    LikeSerializer,
-    SongCreateSerializer,
-    SongRetrieveSerializer,
-)
+from .serializers import GenreSerializer, LikeSerializer, SongSerializer, SongUpdateSerializer
 
 
 class StandardResultsSetPagination(PageNumberPagination):
@@ -22,36 +17,37 @@ class StandardResultsSetPagination(PageNumberPagination):
     max_page_size = 1000
 
 
-class GenreListAPIView(generics.ListAPIView):
+class GenreListCreateAPIView(generics.ListCreateAPIView):
     queryset = Genre.objects.all()
     serializer_class = GenreSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [UserGetAdminPostPutDeletePermission]
     pagination_class = StandardResultsSetPagination
 
 
-class GenreCreateAPIView(generics.CreateAPIView):
+class GenreRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Genre.objects.all()
     serializer_class = GenreSerializer
-    permission_classes = [IsAdminOnlyPermission]
+    permission_classes = [UserGetAdminPostPutDeletePermission]
+    http_method_names = ["get", "put", "delete"]
 
 
-class GenreRetrieveAPIView(generics.RetrieveAPIView):
-    queryset = Genre.objects.all()
-    serializer_class = GenreSerializer
-    permission_classes = (IsAdminOnlyPermission,)
+class SongListCreateAPIView(generics.ListCreateAPIView):
+    queryset = Song.objects.all()
+    serializer_class = SongSerializer
+    permission_classes = [UserGetAdminPostPutDeletePermission]
+    pagination_class = StandardResultsSetPagination
 
 
-class GenreUpdateAPIView(generics.UpdateAPIView):
-    queryset = Genre.objects.all()
-    serializer_class = GenreSerializer
-    permission_classes = [IsAdminOnlyPermission]
-    http_method_names = ["put"]
+class SongRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Song.objects.all()
+    permission_classes = [UserGetAdminPostPutDeletePermission]
+    http_method_names = ["get", "put", "delete"]
 
-
-class GenreDestroyAPIView(generics.DestroyAPIView):
-    queryset = Genre.objects.all()
-    serializer_class = GenreSerializer
-    permission_classes = (IsAdminOnlyPermission,)
+    def get_serializer_class(self):
+        if self.request.method in ["GET", "DELETE"]:
+            return SongSerializer
+        elif self.request.method == "PUT":
+            return SongUpdateSerializer
 
 
 class LikeAPIView(APIView):
@@ -85,35 +81,3 @@ class UnLikeAPIView(APIView):
             Like.objects.filter(user=self.request.user, song=request.data.get("song")).delete()
             return Response(status=status.HTTP_204_NO_CONTENT)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
-class SongListAPIView(generics.ListAPIView):
-    queryset = Song.objects.all()
-    serializer_class = SongRetrieveSerializer
-    permission_classes = [IsAuthenticated]
-    pagination_class = StandardResultsSetPagination
-
-
-class SongCreateAPIView(generics.CreateAPIView):
-    queryset = Song.objects.all()
-    serializer_class = SongCreateSerializer
-    permission_classes = [IsAdminOnlyPermission]
-
-
-class SongRetrieveAPIView(generics.RetrieveAPIView):
-    queryset = Song.objects.all()
-    serializer_class = SongRetrieveSerializer
-    permission_classes = (IsAdminOnlyPermission,)
-
-
-class SongUpdateAPIView(generics.UpdateAPIView):
-    queryset = Song.objects.all()
-    serializer_class = SongCreateSerializer
-    permission_classes = [IsAdminOnlyPermission]
-    http_method_names = ["put"]
-
-
-class SongDestroyAPIView(generics.DestroyAPIView):
-    queryset = Song.objects.all()
-    serializer_class = SongRetrieveSerializer
-    permission_classes = (IsAdminOnlyPermission,)

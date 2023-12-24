@@ -9,4 +9,5 @@ urlpatterns = [
     path("otp/check/", views.VerifyPhoneUsingOTPAPIView.as_view()),
     path("token/", TokenObtainPairView.as_view()),
     path("token/refresh/", TokenRefreshView.as_view()),
+    path("profile/", views.UserProfileAPIView.as_view()),
 ]

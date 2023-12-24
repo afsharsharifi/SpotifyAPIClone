@@ -1,9 +1,9 @@
 from rest_framework import generics
 
-from extensions.permissions import IsAdminOnlyPermission
+from extensions.permissions import IsAdminOnlyPermission, UserGetAdminPostPutDeletePermission
 
-from ..models import User, Artist
-from .serializers import UserSerializer, ArtistSerializer
+from ..models import Artist, User
+from .serializers import ArtistSerializer, UserSerializer, UserUpdateSerializer
 
 
 class UserListCreateAPIView(generics.ListCreateAPIView):
@@ -12,23 +12,11 @@ class UserListCreateAPIView(generics.ListCreateAPIView):
     permission_classes = [IsAdminOnlyPermission]
 
 
-class UserRetrieveAPIView(generics.RetrieveAPIView):
+class UserRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
     queryset = User.objects.all()
-    serializer_class = UserSerializer
-    permission_classes = (IsAdminOnlyPermission,)
-
-
-class UserUpdateAPIView(generics.UpdateAPIView):
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
-    permission_classes = (IsAdminOnlyPermission,)
-    http_method_names = ["put"]
-
-
-class UserDestroyAPIView(generics.DestroyAPIView):
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
-    permission_classes = (IsAdminOnlyPermission,)
+    serializer_class = UserUpdateSerializer
+    permission_classes = [IsAdminOnlyPermission]
+    http_method_names = ["get", "put", "delete"]
 
 
 # ? Artist Views
@@ -37,23 +25,11 @@ class UserDestroyAPIView(generics.DestroyAPIView):
 class ArtistListCreateAPIView(generics.ListCreateAPIView):
     queryset = Artist.objects.all()
     serializer_class = ArtistSerializer
-    permission_classes = [IsAdminOnlyPermission]
+    permission_classes = [UserGetAdminPostPutDeletePermission]
 
 
-class ArtistRetrieveAPIView(generics.RetrieveAPIView):
+class ArtistRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Artist.objects.all()
     serializer_class = ArtistSerializer
-    permission_classes = (IsAdminOnlyPermission,)
-
-
-class ArtistUpdateAPIView(generics.UpdateAPIView):
-    queryset = Artist.objects.all()
-    serializer_class = ArtistSerializer
-    permission_classes = (IsAdminOnlyPermission,)
-    http_method_names = ["put"]
-
-
-class ArtistDestroyAPIView(generics.DestroyAPIView):
-    queryset = Artist.objects.all()
-    serializer_class = ArtistSerializer
-    permission_classes = (IsAdminOnlyPermission,)
+    permission_classes = [UserGetAdminPostPutDeletePermission]
+    http_method_names = ["get", "put", "delete"]

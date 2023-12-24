@@ -1,13 +1,12 @@
 from datetime import timedelta
 
-from django.shortcuts import get_object_or_404
 from django.utils import timezone
 from drf_spectacular.utils import OpenApiExample, extend_schema
 from rest_framework import status
 from rest_framework.generics import CreateAPIView
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from rest_framework.exceptions import APIException
 
 from extensions.utils import generate_otp
 from users.models import User
@@ -97,3 +96,13 @@ class UserCreateAPIView(CreateAPIView):
         if user:
             return Response({"detail": "این شماره تلفن قبلا تایید شده است"}, status=status.HTTP_400_BAD_REQUEST)
         return super().post(request, *args, **kwargs)
+
+
+class UserProfileAPIView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    @extend_schema(request=None, responses=serializers.UserRegisterSerializer)
+    def get(self, request, format=None):
+        user = User.objects.get(id=request.user.id)
+        serializer = serializers.UserRegisterSerializer(user)
+        return Response(serializer.data)

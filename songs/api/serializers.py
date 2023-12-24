@@ -22,7 +22,7 @@ class LikeSerializer(serializers.ModelSerializer):
         read_only_fields = ("id", "user")
 
 
-class SongRetrieveSerializer(serializers.ModelSerializer):
+class SongSerializer(serializers.ModelSerializer):
     artist = ArtistSerializer()
     genre = GenreSerializer()
     views = serializers.SerializerMethodField()
@@ -42,7 +42,7 @@ class SongRetrieveSerializer(serializers.ModelSerializer):
         return obj.likes.all().count()
 
 
-class SongCreateSerializer(serializers.ModelSerializer):
+class SongUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Song
         fields = ("id", "name", "artist", "genre", "file_320", "file_128", "created_at", "updated_at")

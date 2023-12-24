@@ -15,8 +15,8 @@ class OTPPhoneNumberSerializer(serializers.Serializer):
 class UserRegisterSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ("id", "first_name", "last_name", "requested_phone", "password")
-        read_only_fields = ("id",)
+        fields = ("id", "first_name", "last_name", "requested_phone", "password", "is_admin")
+        read_only_fields = ("id", "is_admin")
         extra_kwargs = {
             "requested_phone": {"max_length": 11, "min_length": 11},
             "password": {"write_only": True, "min_length": 8},
