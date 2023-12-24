@@ -1,3 +1,5 @@
+from django.db.models import Count
+from django.shortcuts import get_object_or_404
 from drf_spectacular.utils import extend_schema
 from rest_framework import generics, status
 from rest_framework.pagination import PageNumberPagination
@@ -6,6 +8,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from extensions.permissions import UserGetAdminPostPutDeletePermission
+from users.models import UserIP
 
 from ..models import Genre, Like, Song
 from .serializers import GenreSerializer, LikeSerializer, SongSerializer, SongUpdateSerializer
@@ -48,6 +51,30 @@ class SongRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
             return SongSerializer
         elif self.request.method == "PUT":
             return SongUpdateSerializer
+
+    def retrieve(self, request, *args, **kwargs):
+        response = super().retrieve(request, args, kwargs)
+        song = get_object_or_404(Song, pk=response.data["id"])
+        x_forwarded_for = request.META.get("HTTP_X_FORWARDED_FOR")
+        ip = ""
+        if x_forwarded_for:
+            ip = x_forwarded_for.split(",")[0]
+        else:
+            ip = request.META.get("REMOTE_ADDR")
+        ip_obj, created = UserIP.objects.get_or_create(user_ip=ip)
+        song.viewers_by_ip.add(ip_obj)
+        return response
+
+
+class PopularSongsAPIView(generics.ListAPIView):
+    queryset = Song.objects.all()
+    serializer_class = SongSerializer
+    permission_classes = [IsAuthenticated]
+    pagination_class = StandardResultsSetPagination
+
+    def get_queryset(self):
+        queryset = self.queryset.annotate(q_count=Count("likes")).order_by("-q_count")
+        return queryset
 
 
 class LikeAPIView(APIView):
