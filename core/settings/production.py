@@ -10,12 +10,21 @@ ALLOWED_HOSTS = [
     "spotify.apanel.top",
     "http://spotify.apanel.top",
     "https://spotify.apanel.top",
+    "http://localhost:3000",
+    "http://localhost:5000",
+    "https://react-spotify-app-red.vercel.app",
 ]
 
-CORS_ORIGIN_WHITELIST = [
-    "http://127.0.0.1",
+CORS_ALLOWED_ORIGINS = [
     "http://spotify.apanel.top",
     "https://spotify.apanel.top",
+    "http://localhost:3000",
+    "http://localhost:5000",
+    "https://react-spotify-app-red.vercel.app",
+]
+
+CORS_ALLOWED_ORIGIN_REGEXES = [
+    r"(?:https?://)?react-spotify-app-red\.vercel\.app:(\d+)",
 ]
 
 

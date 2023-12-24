@@ -14,4 +14,4 @@ from .base import *
 if os.environ["ENV_NAME"] == "production":
     from .production import *
 else:
-    from .local import *
+    from .development import *

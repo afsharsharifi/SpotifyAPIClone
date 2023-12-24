@@ -16,6 +16,7 @@ CSRF_TRUSTED_ORIGINS = [
     "https://127.0.0.1",
     "http://spotify.apanel.top",
     "https://spotify.apanel.top",
+    "https://react-spotify-app-red.vercel.app",
 ]
 
 
@@ -75,8 +76,7 @@ REST_FRAMEWORK = {
 }
 
 SIMPLE_JWT = {
-    # ! Change Later
-    "ACCESS_TOKEN_LIFETIME": timedelta(days=120),
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=5),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=120),
 }
 
