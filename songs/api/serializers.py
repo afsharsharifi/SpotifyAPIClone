@@ -29,7 +29,7 @@ class SongSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Song
-        fields = ("id", "name", "artist", "genre", "views", "likes", "file_320", "file_128", "created_at", "updated_at")
+        fields = ("id", "name", "artist", "genre", "views", "likes", "cover_image", "file", "created_at", "updated_at")
         read_only_fields = ("id", "created_at", "updated_at")
 
     @extend_schema_field(OpenApiTypes.INT)
@@ -44,5 +44,5 @@ class SongSerializer(serializers.ModelSerializer):
 class SongUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Song
-        fields = ("id", "name", "artist", "genre", "file_320", "file_128", "created_at", "updated_at")
+        fields = ("id", "name", "artist", "genre", "cover_image", "file", "created_at", "updated_at")
         read_only_fields = ("id", "created_at", "updated_at")

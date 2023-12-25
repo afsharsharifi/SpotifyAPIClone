@@ -1,6 +1,6 @@
 from django.db import models
-from extensions.path_manager import create_songs_file_path
 
+from extensions.path_manager import create_cover_image_path, create_songs_file_path
 from users.models import Artist, User, UserIP
 
 
@@ -20,8 +20,8 @@ class Song(models.Model):
     artist = models.ForeignKey(Artist, on_delete=models.CASCADE, related_name="songs", verbose_name="خواننده")
     genre = models.ForeignKey(Genre, related_name="songs", on_delete=models.SET_NULL, null=True, blank=True, verbose_name="سبک")
     viewers_by_ip = models.ManyToManyField(UserIP, default="192.168.0.1", blank=True, related_name="videos", verbose_name="بازدیدکنندگان بر اساس IP")
-    file_320 = models.FileField(verbose_name="کیفیت 320", upload_to=create_songs_file_path, null=True, blank=True)
-    file_128 = models.FileField(verbose_name="کیفیت 128", upload_to=create_songs_file_path, null=True, blank=True)
+    cover_image = models.FileField(verbose_name="کاور موزیک", upload_to=create_cover_image_path, null=True, blank=True)
+    file = models.FileField(verbose_name="فایل موزیک", upload_to=create_songs_file_path)
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="تاریخ ساخت")
     updated_at = models.DateTimeField(auto_now=True, verbose_name="تاریخ ویرایش")
 
