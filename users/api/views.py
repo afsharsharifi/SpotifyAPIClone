@@ -42,10 +42,10 @@ class ArtistRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
     http_method_names = ["get", "put", "delete"]
 
 
-class ArtistSongsListAPIView(APIView):
+class ArtistSongsAPIView(APIView):
     queryset = Song.objects.all()
     serializer_class = SongSerializer
-    # permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated]
 
     def get(self, request, pk, format=None):
         artist = get_object_or_404(Artist, pk=pk)

@@ -11,7 +11,7 @@ from extensions.permissions import UserGetAdminPostPutDeletePermission
 from users.models import UserIP
 
 from ..models import Genre, Like, Song
-from .serializers import GenreSerializer, LikeSerializer, SongSerializer, SongUpdateSerializer
+from .serializers import GenreSerializer, LikeSerializer, SongSerializer, SongUpdateSerializer, SongPublicSerializer
 
 
 class StandardResultsSetPagination(PageNumberPagination):
@@ -39,6 +39,17 @@ class SongListCreateAPIView(generics.ListCreateAPIView):
     serializer_class = SongSerializer
     permission_classes = [UserGetAdminPostPutDeletePermission]
     pagination_class = StandardResultsSetPagination
+
+
+class SongPublicListAPIView(generics.ListAPIView):
+    queryset = Song.objects.all()
+    serializer_class = SongPublicSerializer
+    pagination_class = StandardResultsSetPagination
+
+
+class SongPublicRetrieveAPIView(generics.RetrieveAPIView):
+    queryset = Song.objects.all()
+    serializer_class = SongPublicSerializer
 
 
 class SongRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):

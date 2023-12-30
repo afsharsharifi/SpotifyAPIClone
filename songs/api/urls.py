@@ -6,6 +6,8 @@ urlpatterns = [
     path("genre/", views.GenreListCreateAPIView.as_view()),
     path("genre/<int:pk>/", views.GenreRetrieveUpdateDestroyAPIView.as_view()),
     path("popular/", views.PopularSongsAPIView.as_view()),
+    path("public/", views.SongPublicListAPIView.as_view()),
+    path("public/<int:pk>/", views.SongPublicRetrieveAPIView.as_view()),
     path("like/", views.LikeAPIView.as_view()),
     path("unlike/", views.UnLikeAPIView.as_view()),
     path("", views.SongListCreateAPIView.as_view()),
