@@ -46,23 +46,3 @@ class SongUpdateSerializer(serializers.ModelSerializer):
         model = Song
         fields = ("id", "name", "artist", "genre", "cover_image", "file", "created_at", "updated_at")
         read_only_fields = ("id", "created_at", "updated_at")
-
-
-class SongPublicSerializer(serializers.ModelSerializer):
-    artist = ArtistSerializer()
-    genre = GenreSerializer()
-    views = serializers.SerializerMethodField()
-    likes = serializers.SerializerMethodField()
-
-    class Meta:
-        model = Song
-        fields = ("id", "name", "artist", "genre", "views", "likes", "cover_image")
-        read_only_fields = ("id", "created_at", "updated_at")
-
-    @extend_schema_field(OpenApiTypes.INT)
-    def get_views(self, obj):
-        return obj.viewers_by_ip.all().count()
-
-    @extend_schema_field(OpenApiTypes.INT)
-    def get_likes(self, obj):
-        return obj.likes.all().count()

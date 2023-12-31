@@ -1,11 +1,10 @@
 from django.db.models import Count
 from django.shortcuts import get_object_or_404
 from rest_framework import generics
-from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from extensions.permissions import IsAdminOnlyPermission, UserGetAdminPostPutDeletePermission
+from extensions.permissions import AloowAllGetAdminPostPutDeletePermission
 from songs.api.serializers import SongSerializer
 from songs.models import Song
 
@@ -16,13 +15,13 @@ from .serializers import ArtistSerializer, UserSerializer, UserUpdateSerializer
 class UserListCreateAPIView(generics.ListCreateAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
-    permission_classes = [IsAdminOnlyPermission]
+    permission_classes = [AloowAllGetAdminPostPutDeletePermission]
 
 
 class UserRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
     queryset = User.objects.all()
     serializer_class = UserUpdateSerializer
-    permission_classes = [IsAdminOnlyPermission]
+    permission_classes = [AloowAllGetAdminPostPutDeletePermission]
     http_method_names = ["get", "put", "delete"]
 
 
@@ -32,20 +31,20 @@ class UserRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
 class ArtistListCreateAPIView(generics.ListCreateAPIView):
     queryset = Artist.objects.all()
     serializer_class = ArtistSerializer
-    permission_classes = [UserGetAdminPostPutDeletePermission]
+    permission_classes = [AloowAllGetAdminPostPutDeletePermission]
 
 
 class ArtistRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Artist.objects.all()
     serializer_class = ArtistSerializer
-    permission_classes = [UserGetAdminPostPutDeletePermission]
+    permission_classes = [AloowAllGetAdminPostPutDeletePermission]
     http_method_names = ["get", "put", "delete"]
 
 
 class ArtistSongsAPIView(APIView):
     queryset = Song.objects.all()
     serializer_class = SongSerializer
-    permission_classes = [IsAuthenticated]
+    # permission_classes = [AloowAllGetAdminPostPutDeletePermission]
 
     def get(self, request, pk, format=None):
         artist = get_object_or_404(Artist, pk=pk)
