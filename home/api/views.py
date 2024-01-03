@@ -11,7 +11,7 @@ from .serializers import ReviewSerializer
 class ReviewListAPIView(generics.ListAPIView):
     queryset = Review.objects.all()
     serializer_class = ReviewSerializer
-    permission_classes = [IsAdminOnlyPermission]
+    # permission_classes = [IsAdminOnlyPermission]
     pagination_class = StandardResultsSetPagination
 
 
